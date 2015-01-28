@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<script type="text/c#" src="Controllers/WirelessAssetController.cs"></script>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Product App</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true">
+        </asp:ScriptManager>
+        <div>
+            Your Name :
+            <asp:TextBox ID="txtUserName" runat="server"></asp:TextBox>
+            <input id="btnGetTime" type="button" value="Show Current Time" onclick="ShowCurrentTime()" />
+        </div>
+    </form>
+    <div>
+        <input type="button" value="Ben Button" onclick="callC();" />
+        <h2>All Products 123</h2>
+        <ul id="products" />
+    </div>
+    <div>
+        <h2>Search by ID</h2>
+        <input type="text" id="prodId" size="5" />
+        <input type="button" value="Search" onclick="find();" />
+        <p id="product" />
+    </div>
+    <div>
+        <h2>Let's try calling an XML-RPC service at our server</h2>
+
+        <pre width="30">
+        This calls a Web API on our server.  
+        The Server will use an XML-RPC method made available by Charles Cook
+        for testing his excellent XML-RPC.NET library.  For us, it is a little
+         POC for calling other services from our server.</pre>
+        <input type="number" id="varA" value="10" size="5" />
+        <input type="number" id="varB" value="2" size="5" />
+        <input type="button" value="Add them" onclick="doAdd();" />
+        <p id="sum" />
+    </div>
+    <div>
+        <h2>Lets try post</h2>
+
+        <pre width="30">
+        This posts a product from Will's phone</pre>
+        <input type="number" id="var1" value="10" size="5" />
+        <input type="number" id="var2" value="2" size="5" />
+        <input type="button" value="do post" onclick="doPost();" />
+        <p id="postResult" />
+    </div>
+    <script src="Scripts/jquery-2.1.3.min.js"></script>
+    <script>
+        var uri = 'api/product';
+
+        $(document).ready(function () {
+            // Send an AJAX request
+            $.getJSON(uri)
+                .done(function (data) {
+                    // On success, 'data' contains a list of products.
+                    $.each(data, function (key, item) {
+                        // Add a list item for the product.
+                        $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+                    });
+                });
+        });
+
+        function formatItem(item) {
+            return item.Name + ': $' + item.Price;
+        }
+
+        function find() {
+            var id = $('#prodId').val();
+            $.getJSON(uri + '/' + id)
+                .done(function (data) {
+                    $('#product').text(formatItem(data));
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $('#product').text('Error: ' + err);
+                });
+        }
+
+        // use this to test connecting a web service to
+        function doPost() {
+            var var1 = $('#var1').val();
+            var var2 = $('#var2').val();
+            var json = { "Id": 1, "Name": "Tomato Soup", "Category": "Groceries", "Price": var2 };
+            // add this line to deal with long wait while calling the xml-rpc
+            $.ajaxSetup({ timeout: 15000 })
+            // get the data
+            $.ajax({
+                type: "POST",
+                url: "/api/product",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                dataType: "json",
+                success: function (data) { $('#postResult').text('result is ' + formatItem(data)) },
+                error: function (err) { $('#postResult').text('there is an error! ' + err) }
+            });
+        }
+
+        // use this to test connecting a web service to
+        var mathUri = 'api/maths';
+        function doAdd() {
+            var varA = $('#varA').val();
+            var varB = $('#varB').val();
+            // add this line to deal with long wait while calling the xml-rpc
+            $.ajaxSetup({ timeout: 15000 })
+            // get the data
+            $.getJSON(mathUri + '?varA=' + varA + '&varB=' + varB)
+                .done(function (data) {
+                    //update the sum paragraph
+                    $('#sum').text('The sum is ' + data);
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $('#sum').text('Error: ' + err);
+                });
+        }
+    </script>
+    <script type="text/javascript">
+        function ShowCurrentTime() {
+
+            PageMethods.GetCurrentTime(document.getElementById("<%=txtUserName.ClientID%>").value, OnSuccess);
+
+        }
+
+        function OnSuccess(response, userContext, methodName) {
+
+            alert(response);
+
+        }
+
+    function callC() {
+
+        PageMethods.webpageTest();
+
+    }
+
+    </script>
+</body>
+</html>
