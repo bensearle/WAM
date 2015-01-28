@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Diagnostics;
 using ProductsApp.Helpers;
+using CookComputing.XmlRpc;
+using System.Web.Script.Serialization;
 
 namespace ProductsApp.Controllers
 {
@@ -63,6 +65,18 @@ namespace ProductsApp.Controllers
             {
                 wd.Name = "Damn hipsters";
                 Debug.WriteLine("unix time conversion is: " + UnixTime.UnixTimeStampToDateTime(wd.Time).ToString());
+                IWoa woaEndPoint = XmlRpcProxyGen.Create<IWoa>();
+                try
+                {
+                    var serializer = new JavaScriptSerializer();
+                    Debug.WriteLine(woaEndPoint.SetGpsDp(serializer.Serialize(wd)));
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+
+
             }
             else
             {

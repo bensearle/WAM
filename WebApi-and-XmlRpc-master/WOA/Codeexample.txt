@@ -1,0 +1,47 @@
+using System;
+using System.IO;
+using System.Threading;
+using CookComputing.XmlRpc;
+[XmlRpcUrl("http://localhost/RPC2")]
+public interface IDoubleValues : IXmlRpcProxy
+{
+[XmlRpcMethod("pvss.db.getValues")]
+double[] GetValues(string[] dpName);
+[XmlRpcMethod("pvss.db.setValues")]
+int SetValues(string[] dpName, double[] dpValues);
+}
+class WinCCOAExample
+{
+static void Main(string[] args)
+{
+try
+{
+IDoubleValues d = XmlRpcProxyGen.Create<IDoubleValues>();
+
+string[] dps = new string [] {"ExampleDP_Trend1.", "ExampleDP_Result."};
+double[] res;
+
+while (true) // just for testing, read dpvalues, increase values, set dpvalues....endless.. performance is pretty good ;-)
+{
+res = d.GetValues(dps);
+for (int i = 0; i < res.Length; i++)
+{
+Console.WriteLine(dps[i] + " => " + res[i]);
+res[i]++;
+}
+int ret = d.SetValues(dps, res);
+Console.WriteLine("dpSet ret="+ret);
+Thread.Sleep(100);
+}
+}
+catch (XmlRpcFaultException fex)
+{
+Console.WriteLine(fex.FaultString);
+}
+catch (Exception ex)
+{
+Console.WriteLine(ex.Message);
+}
+Console.ReadLine();
+}
+}

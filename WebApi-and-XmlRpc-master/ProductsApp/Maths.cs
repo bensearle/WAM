@@ -1,4 +1,5 @@
 ﻿using CookComputing.XmlRpc;
+using ProductsApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,16 @@ namespace ProductsApp
 
         [XmlRpcMethod("math.SumAndDifference")]
         SumAndDiff RetSumAndDifference(int a, int b);
+    }
+
+    [XmlRpcUrl("http://192.168.6.11:3870/RPC2")]
+    public interface IWoa : IXmlRpcProxy
+    {
+        [XmlRpcMethod("woa.poke")]
+        int SetGpsDp(string s);
+
+
+        
     }
 
     public class SumAndDiff
