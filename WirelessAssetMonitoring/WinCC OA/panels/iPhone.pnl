@@ -1,0 +1,414 @@
+V 13
+1
+LANG:10005 0 
+PANEL,-1 -1 500 800 N "_3DFace" 0
+"main()
+{
+
+  dpConnect(\"displayValue\",
+            \"16345853-063a-48c7-92c3-97c6bbed4b61.Name:_online.._value\",
+            \"16345853-063a-48c7-92c3-97c6bbed4b61.LocLat:_online.._value\",
+            \"16345853-063a-48c7-92c3-97c6bbed4b61.LocLong:_online.._value\",
+            \"16345853-063a-48c7-92c3-97c6bbed4b61.Analogue:_online.._value\",
+            \"16345853-063a-48c7-92c3-97c6bbed4b61.Digit:_online.._value\");
+
+}
+
+void displayValue(string dpe, string name, string dpe2, float locLat, string dpe3, float locLong, string dpe4, float analogue, string dpe5, bool digit)
+{
+  DebugN(digit);
+
+  txtName.text = name;
+  txtLat.text = locLat;
+  txtLong.text = locLong;
+  txtAna.text = analogue;
+  txtDig.text = digit;
+  //anaSlider.
+  if (digit){
+    txtDig.backCol(\"green\");
+  }
+  else {
+    txtDig.backCol(\"red\");
+  }
+  anaSlider.value = analogue;
+
+}
+" 0
+ E E E E 1 -1 -1 0  60 30
+""0  1
+E "void sendNotification(string msg)
+{ 
+ // btnSendNotification.backCol(\"STD_valve_opening\");    
+  
+  mapping data;
+  mapping result;
+  mapping headers;
+  mapping object;
+  
+  headers[\"Content-Type\"]=\"application/json\";
+  headers[\"X-ZUMO-APPLICATION\"]=g_application_key;
+
+  data[\"headers\"]=headers;
+  
+  /*object[\"projecttoken\"]=g_project_key;
+  object[\"text\"]=msg;
+  object[\"complete\"]=false;*/
+  
+  object[\"AssetGuid\"] = \"089f8c30-f5cd-4041-b2bb-fa8234ff883e\";
+  object[\"Name\"] = txtName.text;
+  object[\"Time\"] = \"1422460775.9745925\";
+  object[\"Digit\"] = txtDig.text;
+  object[\"Analogue\"] = txtAna.text;
+  object[\"LocLat\"] = txtLat.text;
+  object[\"LocLong\"] = txtLong.text;
+  
+  data[\"content\"]=jsonEncode(object);
+  mapping stuff;
+  stuff =  jsonDecode(data[\"content\"]);
+  DebugN(\"*********************\");
+  DebugN(stuff[\"AssetGuid\"]);
+  //data[\"content\"]=\"{\\\"AssetGuid\\\":\\\"089f8c30-f5cd-4041-b2bb-fa8234ff883e\\\",\\\"Name\\\":\\\"Benny\"+txtName.text+\"Boieeee\\\",\\\"Time\\\":1422460775.9745925,\\\"Digit\\\":false,\\\"Analogue\\\":\" + txtAna.text + \",\\\"LocLat\\\":0.8,\\\"LocLong\\\":100.6}\"; 
+  
+  netPost(\"http://192.168.6.11:50109/API/WirelessAsset\", data, result);
+  DebugTN(result);
+//  btnSendNotification.backCol(\"_Button\");    
+}" 0
+ 2
+"CBRef" "1"
+"EClose" E
+0 0 0
+"WAM\\iphone.jpg" -1 -1 334 667
+-1
+DISPLAY_LAYER, 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0
+LAYER, 0 
+1
+LANG:10005 0 
+6 3
+"RECTANGLE3"
+""
+1 120 170 E E E 1 E 1 E N {0,0,0} E N {255,255,255} E E
+ E E
+2 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+3
+"sizePolicy" "Preferred Preferred"
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1 0 1 0 1.13686837721616e-013 1 E 120 170 380 630
+29 4
+"anaSlider"
+""
+1 251 383 E E E 1 E 1 E N "_3DText" E N "_3DFace" E E
+ E E
+3 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+2
+"maxValue" "int 100"
+"orientation" "enum 0"
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  251 383 371 406
+12 SliderWidget
+0
+E2 8
+"PRIMITIVE_TEXT4"
+""
+1 -918.7225742399909 -715.2374504889881 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+7 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "1"
+E E 0 1 1 2 1 E 2.275 0 2.3515625 -212.070845588235 -307.5493676927354 0 E 151 231 180 243
+0 2 2 "0s" 0 0 0 192 0 0  151 231 1
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0 1
+LANG:10005 4 Name
+2 10
+"PRIMITIVE_TEXT5"
+""
+1 -704.8167638689016 2237.08138262213 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+9 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "1"
+E E 0 1 1 2 1 E 2.275 0 2.3515625 -207.5208455882351 -302.8462426927354 0 E 149 245 194 257
+0 2 2 "0s" 0 0 0 192 0 0  149 245 1
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0 1
+LANG:10005 9 Lattitude
+2 11
+"PRIMITIVE_TEXT6"
+""
+1 -490.9109534978052 5189.400215733255 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+10 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "1"
+E E 0 1 1 2 1 E 2.275 0 2.3515625 -202.9708455882351 -298.1431176927354 0 E 147 259 196 271
+0 2 2 "0s" 0 0 0 192 0 0  147 259 1
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0 1
+LANG:10005 9 Longitude
+2 12
+"PRIMITIVE_TEXT7"
+""
+1 -277.0051431267113 11607.91616592991 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+11 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "1"
+E E 0 1 1 2 1 E 2.275 0 2.3515625 -198.4208455882351 -227.3723733690051 0 E 145 273 176 285
+0 2 2 "0s" 0 0 0 192 0 0  145 273 1
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0 1
+LANG:10005 7 Digital
+2 13
+"PRIMITIVE_TEXT8"
+""
+1 -63.0993327556177 9120.065338896106 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+12 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "1"
+E E 0 1 1 2 1 E 2.275 0 2.3515625 -193.8708455882351 -326.3618676927354 0 E 143 287 190 299
+0 2 2 "0s" 0 0 0 192 0 0  143 287 1
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0 1
+LANG:10005 8 Analogue
+14 17
+"txtName"
+""
+1 251.1735294117644 249.5532730950251 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+16 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+0
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  249 244 373 267
+3 "0s" 0 0 0 0 0 -1  E E E
+14 19
+"txtLat"
+""
+1 251.1735294117644 287.0812678866917 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+18 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+0
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  249 281 373 304
+3 "0s" 0 0 0 0 0 -1  E E E
+14 20
+"txtDig"
+""
+1 251.1735294117644 423.2314347161184 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+19 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+0
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  249 417 373 440
+3 "0s" 0 0 0 0 0 -1  E E E
+14 21
+"txtLong"
+""
+1 251.1735294117644 325.230793846979 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+20 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+0
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  249 319 373 342
+3 "0s" 0 0 0 0 0 -1  E E E
+14 22
+"txtAna"
+""
+1 251.1735294117644 363.0990698072648 E E E 1 E 1 E N "_WindowText" E N "_Window" E E
+ E E
+21 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+0
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  249 357 373 380
+3 "0s" 0 0 0 0 0 -1  E E E
+2 24
+"PRIMITIVE_TEXT10"
+""
+1 -184.6024952909118 -3364.369440473923 E E E 1 E 1 E N {117,1,93} E N "_Window" E E
+ E E
+23 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+3
+"sizePolicy" "Fixed Fixed"
+"dashclr"N "_Transparent"
+"antiAliased" "1"
+E E 0 1 1 2 1 E 1.612056794267296 0 3.381818181818182 -113.196462345827 -495.6000000000003 0 E 151 200 300 212
+0 2 2 "0s" 0 0 0 192 0 0  151 200 1
+1
+LANG:10005 34 MS Shell Dlg 2,8,-1,5,75,0,0,0,0,0
+0 1
+LANG:10005 25 Wireless Asset Monitoring
+6 25
+"RECTANGLE4"
+""
+1 125 485 E E E 1 E 1 E N "_Transparent" E N {255,255,255} E E
+ E E
+24 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 1.027272727272727 0 1 11.59090909090908 58 2  1 0  "pictures/WAM/logo.png" 4294967295 E 125 485 344 551
+6 26
+"RECTANGLE5"
+""
+1 145 473 E E E 1 E 1 E N "_Transparent" E N {255,255,255} E E
+ E E
+25 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+2
+"dashclr"N "_Transparent"
+"antiAliased" "0"
+E E 0 1 1 2 1 E 0.8104575163398693 0 1.2 68.48366013071896 -98.60000000000002 2  1 0  "pictures/WAM/FIR-RAD-GEN-OPH-001.png" 4294967295 E 145 473 297 522
+13 27
+"PUSH_BUTTON1"
+""
+1 333 470 E E E 1 E 1 E N "_ButtonText" E N "_Button" E E
+ E E
+26 0 0 0 0 0
+E E E
+0
+1
+LANG:10005 0 
+
+0
+1
+LANG:10005 37 MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0
+0  331 460 363 491
+
+T 
+1
+LANG:10005 12 PUSH_BUTTON1
+"string g_application_key = \"GnzJstknqoeDprjDloUHSLJkIxIdXQ71\";
+string g_project_key = \"033bd94b1168d7e4f0d644c3c95e35bf\";
+main()
+{
+  sendNotification(\"Hellooo World\");
+}
+
+" 0
+ E E E
+0
+LAYER, 1 
+1
+LANG:10005 0 
+0
+LAYER, 2 
+1
+LANG:10005 0 
+0
+LAYER, 3 
+1
+LANG:10005 0 
+0
+LAYER, 4 
+1
+LANG:10005 0 
+0
+LAYER, 5 
+1
+LANG:10005 0 
+0
+LAYER, 6 
+1
+LANG:10005 0 
+0
+LAYER, 7 
+1
+LANG:10005 0 
+0
+0
